@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Love Letter for May</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Great+Vibes&family=Montserrat:wght@100;300;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* RICH CONTRAST PALETTE */
+    --deep-bg: #1a1c1a;       /* Deep Forest/Charcoal */
+    --velvet-rose: #a4133c;   /* Rich, Dark Peony Red */
+    --petal-pink: #ff85a1;    /* Vibrant accent pink */
+    --champagne: #faedcd;     /* High-contrast text/highlight */
+    --shadow-green: #2d3a30;  /* Dark stem green */
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+  
+  body { 
+    background-color: var(--deep-bg); 
+    background: radial-gradient(circle at center, #252b26 0%, #1a1c1a 100%);
+    color: var(--champagne); 
+    font-family: 'Montserrat', sans-serif; 
+    overflow-x: hidden; 
+  }
+
+  /* --- CUSTOM CURSOR (Glow Touch) --- */
+  #cursor {
+    width: 20px; height: 20px; border: 2px solid var(--petal-pink); border-radius: 50%;
+    position: fixed; pointer-events: none; z-index: 9999; transition: 0.1s;
+    box-shadow: 0 0 15px var(--velvet-rose);
+    background: rgba(164, 19, 60, 0.2);
+  }
+
+  /* --- AMBIENT MOOD LIGHTING --- */
+  .glow-point {
+    position: fixed; width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(164, 19, 60, 0.12) 0%, transparent 70%);
+    z-index: 0; pointer-events: none; border-radius: 50%;
+  }
+
+  /* --- LOCK SCREEN (PREMIUM DARK) --- */
+  #lock-screen {
+    position: fixed; inset: 0; z-index: 1000;
+    display: flex; align-items: center; justify-content: center;
+    background: #0d0e0d; transition: 1.2s cubic-bezier(0.9, 0, 0.1, 1);
+  }
+
+  .vault-box {
+    width: 420px; padding: 60px 40px; border-radius: 40px;
+    background: #1a1c1a; border: 1px solid var(--velvet-rose);
+    box-shadow: 0 40px 80px rgba(0,0,0,0.8); text-align: center;
+  }
+
+  .pin-dot-wrap { display: flex; justify-content: center; gap: 20px; margin-bottom: 40px; }
+  .p-dot { width: 14px; height: 14px; border-radius: 50%; border: 1px solid var(--petal-pink); transition: 0.4s; }
+  .p-dot.filled { background: var(--petal-pink); box-shadow: 0 0 20px var(--velvet-rose); transform: scale(1.3); }
+
+  .keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .k-btn {
+    height: 80px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05);
+    background: rgba(255,255,255,0.02); color: #fff; font-size: 1.6rem;
+    font-weight: 200; transition: 0.3s;
+  }
+  .k-btn:hover { background: var(--velvet-rose); color: #fff; transform: translateY(-5px); }
+
+  /* --- MAIN CONTENT --- */
+  #main { display: none; padding-top: 10vh; }
+
+  .section {
+    min-height: 100vh; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; position: relative; padding: 40px;
+  }
+
+  .glass-card {
+    background: rgba(26, 28, 26, 0.8); border: 1px solid rgba(164, 19, 60, 0.3);
+    border-radius: 40px; padding: 80px 60px; max-width: 900px; width: 100%;
+    box-shadow: 0 50px 100px rgba(0,0,0,0.5);
+    opacity: 0; transform: translateY(50px); transition: 1.5s;
+    backdrop-filter: blur(20px);
+  }
+  .glass-card.reveal { opacity: 1; transform: translateY(0); }
+
+  .gold-title { 
+    font-family: 'Great Vibes', cursive; font-size: 5.5rem; color: var(--petal-pink);
+    margin-bottom: 2rem; text-align: center; text-shadow: 3px 3px 10px rgba(0,0,0,0.5);
+  }
+
+  .message-text {
+    font-size: 1.6rem; line-height: 1.8; text-align: center; font-weight: 300; color: var(--champagne);
+  }
+
+  /* HIGH-CONTRAST POLAROIDS */
+  .polaroid-stack {
+    display: flex; flex-wrap: wrap; justify-content: center; gap: 40px; margin-top: 50px;
+  }
+  .p-frame {
+    background: var(--champagne); padding: 15px 15px 60px; width: 280px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.6); transform: rotate(var(--r));
+    transition: 0.6s cubic-bezier(0.2, 1, 0.2, 1);
+  }
+  .p-frame:hover { transform: rotate(0deg) scale(1.15) translateY(-20px); z-index: 100; }
+  .p-frame img { width: 100%; height: 260px; object-fit: cover; filter: contrast(1.1); }
+  .p-label { font-family: 'Great Vibes', cursive; color: #1a1c1a; font-size: 1.8rem; margin-top: 20px; text-align: center; }
+
+  /* VINYL SECTION */
+  .vinyl-box { text-align: center; }
+  .record {
+    width: 250px; height: 250px; margin: 0 auto 40px; border-radius: 50%;
+    background: radial-gradient(circle, var(--velvet-rose) 10%, #000 11%, #000 25%, #1a1c1a 26%);
+    border: 8px solid var(--shadow-green); animation: spin 8s linear infinite; animation-play-state: paused;
+    box-shadow: 0 0 50px rgba(164, 19, 60, 0.4);
+  }
+  .record.spinning { animation-play-state: running; }
+  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+  .p-btn {
+    background: var(--velvet-rose); color: #fff; border: none; padding: 18px 50px;
+    border-radius: 50px; font-weight: 600; letter-spacing: 2px;
+    box-shadow: 0 10px 30px rgba(164, 19, 60, 0.3); transition: 0.3s;
+  }
+  .p-btn:hover { background: var(--petal-pink); color: #1a1c1a; }
+
+  /* FLOATING PARTICLES */
+  .heart-particle {
+    position: fixed; color: var(--velvet-rose); pointer-events: none;
+    z-index: 1; animation: floatUp 5s linear forwards;
+  }
+  @keyframes floatUp {
+    0% { transform: translateY(0) scale(0); opacity: 0; }
+    20% { opacity: 0.6; }
+    100% { transform: translateY(-100vh) scale(1.8) rotate(90deg); opacity: 0; }
+  }
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div class="glow-point" id="glow"></div>
+
+<div id="lock-screen">
+  <div class="vault-box">
+    <div style="font-family: 'Cinzel'; color: var(--petal-pink); letter-spacing: 5px; font-size: 0.8rem; margin-bottom: 20px;">Guess the Pin My Love</div>
+    <div class="pin-dot-wrap">
+      <div class="p-dot" id="dot0"></div><div class="p-dot" id="dot1"></div>
+      <div class="p-dot" id="dot2"></div><div class="p-dot" id="dot3"></div>
+    </div>
+    <div class="keypad">
+      <button class="k-btn" onclick="tap('1')">1</button><button class="k-btn" onclick="tap('2')">2</button><button class="k-btn" onclick="tap('3')">3</button>
+      <button class="k-btn" onclick="tap('4')">4</button><button class="k-btn" onclick="tap('5')">5</button><button class="k-btn" onclick="tap('6')">6</button>
+      <button class="k-btn" onclick="tap('7')">7</button><button class="k-btn" onclick="tap('8')">8</button><button class="k-btn" onclick="tap('9')">9</button>
+      <button class="k-btn" onclick="clr()">×</button><button class="k-btn" onclick="tap('0')">0</button><button class="k-btn" onclick="spawnHeart()">🌸</button>
+    </div>
+  </div>
+</div>
+
+<div id="main">
+  <section class="section">
+    <div class="glass-card">
+      <h1 class="gold-title">Happy May With You, My Love!</h1>
+      <p class="message-text">
+    Hi Baby it’s already May. At first, I really thought I was going to lose you completely. That’s why I want to say thank you for choosing me again, for loving me again, for trusting me again, and for coming back to my arms.
+
+    <br><br> I know we still have a long way to go. There will be a lot of challenges and struggles along the way, but it’s okay, let’s face everything together. Love isn’t perfect, and I hope you keep choosing me, even during the hard times.
+
+    <br><br> This time, I want us to do things right, my baby. I want you, always and forever. And thank You, God, for helping us find our way back to each other for making us realize that love really works hards..
+
+    <br><br> Now, let’s keep choosing each other every day. We still have so many months and years ahead of us, and I want to spend them with you. I’m sorry if this isn’t written as a traditional letter, but I’ll make it special. I’ll create a website just for you so you can appreciate this more.
+
+    I will always love you, no matter what situation we face. I will always fight for us, no matter what happens. <br><br>
+
+    Thank you for loving me, for being patient with me, and for giving us another chance. I promise to cherish you, to support you, and to love you with all my heart. Happy May, my love! I can’t wait to see what the future holds for us together.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="glass-card" style="max-width: 1100px;">
+      <h1 class="gold-title">Our Memories</h1>
+      <div class="polaroid-stack">
+        <div class="p-frame" style="--r:-4deg;"><img src="https://scontent.fcgy1-1.fna.fbcdn.net/v/t1.15752-9/677865470_1732468998167049_1213488644066522027_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=9f807c&_nc_eui2=AeHuW_JVSSe0K5_pIOGkpYSM_15cFmrainv_XlwWatqKezPYOVW0wM_pgrQp0omGeO6YxOfQMZC4JswllAcP81-T&_nc_ohc=WFENKgBKLrYQ7kNvwGn8jE7&_nc_oc=AdrXPV8oezY9bRNoJwdGQiPLpJmVIOmzhi1AxjBxnv0b75Zqt6MxsrUHJ35tx8LffHzBhQXhMUZPPVdXc96l6ofE&_nc_zt=23&_nc_ht=scontent.fcgy1-1.fna&_nc_ss=7b2a8&oh=03_Q7cD5QH0nu_6QEPlqUndnYej_t657PwhFMccKk9sBGbBywwYTQ&oe=6A204254"><div class="p-label">The Pilots</div></div>
+        <div class="p-frame" style="--r:3deg;"><img src="https://scontent.fcgy1-3.fna.fbcdn.net/v/t1.15752-9/686973063_1461462558467398_4264291480584180561_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=9f807c&_nc_eui2=AeFzSNxK-rpSMqACtXo5GLLuwRqxAX_v2KrBGrEBf-_Yqkgn3Ggz5d0tJB7j_r56TB8PFgPuDZ8vkkOLmAKfTBLY&_nc_ohc=dq6G3GHbYj0Q7kNvwGZzCMk&_nc_oc=AdoijUC6zO24FVM5J-qOqIGobhb4JauHUpyg-sbwFJMnON-yQK9CJy3OgJ-mQ20huwH9wkXF6JcKoviUVWhn_Bzl&_nc_zt=23&_nc_ht=scontent.fcgy1-3.fna&_nc_ss=7b2a8&oh=03_Q7cD5QEi5mzktlQcDltcX4fKKvO12mys_M_VbMwzZXagkXeFwg&oe=6A20228F"><div class="p-label">The Cryers </div></div>
+        <div class="p-frame" style="--r:-2deg;"><img src="https://scontent.fcgy1-3.fna.fbcdn.net/v/t1.15752-9/682900491_959165353697050_1076828552325478121_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=9f807c&_nc_eui2=AeG3AaUoUg-zaQYPCd-1rnXOZs99W_PDa11mz31b88NrXXYzDT5PqG-HtU9BBwlr-Ucgg_FkaMBetLeJ882wSuzc&_nc_ohc=88KjHoW72m4Q7kNvwF6PQPy&_nc_oc=AdrR1qCvoRjLWFWSgrpfRVYTqRcSz111OO1_VHVBaiVAt-XqEqI4cAcFBObpIzskRjhuxEyStVQGDBdUmI-H0W9A&_nc_zt=23&_nc_ht=scontent.fcgy1-3.fna&_nc_ss=7b2a8&oh=03_Q7cD5QHnhHaWyOOg6t1aSekIdE_dTnF1vMO9-RekBH6BA1I7rg&oe=6A20389E"><div class="p-label">Deep Joy</div></div>
+        <div class="p-frame" style="--r:5deg;"><img src="https://scontent.fcgy1-1.fna.fbcdn.net/v/t1.15752-9/690828349_1539984797743575_8493006025860893017_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=9f807c&_nc_eui2=AeGGYiUHao3pzhVX-yhRH1_XP61IGzJ_B7g_rUgbMn8HuKzN-vl-VMUTaHeGaSMAzd8h8HudJ8X2tlMYYBEfu6cc&_nc_ohc=kOTewyE9Y2wQ7kNvwFaQPKx&_nc_oc=AdoDxJyDOaKQAMRJ_7pUOkZk_SQyJRM_qTT4f5FNk2TY8A5O0M8zel3V1XjN2yy_PerkoWDaIiRgH9EI07JTHGCI&_nc_zt=23&_nc_ht=scontent.fcgy1-1.fna&_nc_ss=7b2a8&oh=03_Q7cD5QHMbMZdNC_ZaOp9ouoOwYHvmZRu63eqxG9sLW-6k4J5Ww&oe=6A20193B"><div class="p-label">Always You</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="glass-card vinyl-box">
+      <h1 class="gold-title">Our Frequency</h1>
+      <div class="record" id="record"></div>
+      <audio id="track" src="drei.mp3"></audio>
+      <button class="p-btn" onclick="toggleMusic()" id="playBtn">IGNITE PLAYBACK</button>
+    </div>
+  </section>
+</div>
+
+<script>
+  let entry = "";
+  const PASS = "1143";
+
+  const cursor = document.getElementById('cursor');
+  const glow = document.getElementById('glow');
+  window.addEventListener('mousemove', (e) => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+    glow.style.left = (e.clientX - 350) + 'px';
+    glow.style.top = (e.clientY - 350) + 'px';
+  });
+
+function tap(n) {
+    if(entry.length < 4) {
+      entry += n;
+      updateDots();
+      if(entry.length === 4) {
+        if(entry === PASS) {
+          // --- AUTO-PLAY TRIGGER ---
+          const track = document.getElementById('track');
+          const record = document.getElementById('record');
+          const playBtn = document.getElementById('playBtn');
+          
+          track.play(); 
+          record.classList.add('spinning');
+          playBtn.textContent = "SUSPEND VIBRATION";
+          // --------------------------
+
+          document.getElementById('lock-screen').style.transform = "scale(0.8) rotateX(90deg)";
+          document.getElementById('lock-screen').style.opacity = "0";
+          setTimeout(() => {
+            document.getElementById('lock-screen').style.display = "none";
+            document.getElementById('main').style.display = "block";
+            initScrollReveal();
+          }, 1000);
+        } else {
+          entry = ""; setTimeout(updateDots, 300);
+        }
+      }
+    }
+  }
+
+  function clr() { entry = ""; updateDots(); }
+  function updateDots() {
+    for(let i=0; i<4; i++) {
+      document.getElementById('dot'+i).classList.toggle('filled', i < entry.length);
+    }
+  }
+
+  function initScrollReveal() {
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('reveal'); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.glass-card').forEach(c => obs.observe(c));
+  }
+
+  function toggleMusic() {
+    const t = document.getElementById('track'), r = document.getElementById('record'), b = document.getElementById('playBtn');
+    if(t.paused) { t.play(); r.classList.add('spinning'); b.textContent = "SUSPEND VIBRATION"; }
+    else { t.pause(); r.classList.remove('spinning'); b.textContent = "RESUME FREQUENCY"; }
+  }
+
+  function spawnHeart() {
+    const h = document.createElement('div');
+    h.className = 'heart-particle';
+    const petals = ['🌸', '🥀', '💖', '✨'];
+    h.innerHTML = petals[Math.floor(Math.random() * petals.length)];
+    h.style.left = Math.random() * 100 + 'vw';
+    h.style.top = '100vh';
+    h.style.fontSize = (Math.random() * 20 + 20) + 'px';
+    document.body.appendChild(h);
+    setTimeout(() => h.remove(), 5000);
+  }
+
+  setInterval(spawnHeart, 900);
+</script>
+</body>
+</html>
